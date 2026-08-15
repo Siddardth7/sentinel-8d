@@ -1,4 +1,4 @@
-# Execution — Multi-Station Defect Traceback → 8D
+# Execution — Sentinel-8D: Statistical Root-Cause Traceback & 8D
 
 *The minute-detail build plan: environment, data pipeline, the exact statistical methodology with decision rules, how each result maps into the 8D, a validation checklist, an hour-level schedule, and the pitfalls to avoid. Paired with `idea.md` (the why/what).*
 
@@ -19,7 +19,7 @@ pip freeze > requirements.txt
 
 **Folder scaffolding (create on Day 1):**
 ```
-multistation-rca-8d/
+sentinel-8d/
 ├── data/
 │   ├── raw/                 # untouched download (git-ignored)
 │   └── processed/           # tidy one-row-per-part table

@@ -1,4 +1,4 @@
-# Idea — Multi-Station Defect Traceback → 8D Corrective Action
+# Sentinel-8D: Statistical Root-Cause Traceback & AIAG 8D Corrective Action
 
 *Full problem framing, rationale, scope, risks, deliverables, and how to present this in interviews. This is the "why and what"; `execution.md` is the "how".*
 

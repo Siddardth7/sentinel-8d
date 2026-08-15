@@ -1,14 +1,16 @@
-# Multi-Station Defect Traceback → 8D Corrective Action
+# Sentinel-8D: Statistical Root-Cause Traceback & AIAG 8D Corrective Action
 
-> Tracing a final-inspection failure back through a multi-step machining line to the specific upstream **station and parameter** that caused it — and closing it with a formal, AIAG-format **8D** report backed by statistics.
+> Tracing final-inspection nonconformances across a multi-stage machining routing back to upstream station parameters via multivariate ANOVA and logistic regression ($p < 0.05$), closed with an audit-grade AIAG 8D report.
 
 ![status](https://img.shields.io/badge/status-planning-yellow)
 ![python](https://img.shields.io/badge/python-3.11-blue)
 ![data](https://img.shields.io/badge/dataset-CiP--DMD-informational)
 ![license](https://img.shields.io/badge/license-MIT-green)
 
-**Skill area:** Root-Cause Analysis · 8D / CAPA · MRB disposition
-**Domain:** Discrete machining (general — transfers to semiconductor, automotive, aerospace)
+**Codename:** `sentinel-8d`  
+**Formal Case Study Title:** Statistical Root-Cause Traceback and AIAG 8D Corrective Action in Multi-Stage Discrete Manufacturing  
+**Skill area:** Root-Cause Analysis · 8D / CAPA · MRB Disposition · Statistical Parameter Isolation  
+**Domain:** Advanced Discrete Manufacturing (Cross-domain: Semiconductor, Aerospace, Automotive)  
 **Headline deliverable:** A completed 8D Corrective Action Report whose root cause is proven with data, not guessed.
 
 ---
@@ -39,7 +41,7 @@ The named parameters are the whole point: they let the root cause be a concrete,
 ## Repository structure
 
 ```
-multistation-rca-8d/
+sentinel-8d/
 ├── README.md            ← this file
 ├── roadmap.md           ← milestones & timeline
 ├── idea.md              ← full problem framing, solution, deliverables
