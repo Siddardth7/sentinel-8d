@@ -1,0 +1,31 @@
+# Sentinel-8D — Python dependencies
+#
+# Install into a fresh venv (see guides/day-1.md):
+#   python3.11 -m venv .venv
+#   source .venv/bin/activate      # Windows: .venv\Scripts\activate
+#   pip install --upgrade pip
+#   pip install -r requirements.txt
+#
+# These are left unpinned for the first install. On Day 1, AFTER installing,
+# freeze the exact resolved versions so the analysis is reproducible:
+#   pip freeze > requirements.txt
+
+# --- Data wrangling ---
+pandas
+numpy
+pyarrow          # parquet read/write for data/processed/parts.parquet
+openpyxl         # read .xlsx source files (CiP-DMD ships some as Excel)
+
+# --- Statistics ---
+scipy            # t-test / ANOVA / chi-square (scipy.stats)
+statsmodels      # logistic regression, odds ratios, CIs, VIF, FDR/Bonferroni
+
+# --- Machine learning cross-check ---
+scikit-learn     # gradient-boosted / random-forest + feature importances
+
+# --- Figures ---
+matplotlib
+seaborn
+
+# --- Notebook environment ---
+jupyter

@@ -1,0 +1,3 @@
+# Raw, untouched dataset downloads live here (git-ignored).
+# See guides/day-1.md §Data access gate. Nothing in this folder is committed
+# except this .gitkeep placeholder.

@@ -1,0 +1,21 @@
+# --- Python ---
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+*.egg-info/
+.ipynb_checkpoints/
+
+# --- OS ---
+.DS_Store
+Thumbs.db
+
+# --- Data ---
+# Raw downloads are large and/or license-gated; never commit them.
+# The notebook regenerates data/processed/ from data/raw/.
+data/raw/*
+!data/raw/.gitkeep
+
+# --- Build artifacts ---
+# The 8D PDF is rendered from reports/8D_Report.md; keep the source, not the build.
+reports/8D_Report.pdf
