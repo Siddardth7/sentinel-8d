@@ -166,33 +166,116 @@ def univariate_screen(
     return res_df
 
 
+import statsmodels.api as sm
+from statsmodels.stats.outliers_influence import variance_inflation_factor
+
+
 def compute_vif(df: pd.DataFrame, cols: list[str]) -> pd.DataFrame:
-    """Variance Inflation Factor for the shortlisted continuous predictors.
+    """Variance Inflation Factor for continuous predictors.
 
-    Use statsmodels.stats.outliers_influence.variance_inflation_factor.
-    VIF > ~5 means predictors are collinear and would split the credit, hiding
-    the true driver — drop or combine before fitting the logistic model.
+    Z-scores the predictors and computes VIF to assess multicollinearity.
+    VIF > ~5 indicates collinear predictors that may confound multivariate attribution.
 
-    TODO(day-4): z-score predictors first; return VIF per column.
+    Parameters
+    ----------
+    df : pd.DataFrame
+        Tidy parts dataset.
+    cols : list[str]
+        Predictor column names to evaluate.
+
+    Returns
+    -------
+    pd.DataFrame
+        Table with 'parameter', 'VIF', and 'collinear_flag' (VIF >= 5.0).
     """
-    raise NotImplementedError("Implement on Day 4 — see guides/day-4.md")
+    valid_cols = [c for c in cols if c in df.columns]
+    if not valid_cols:
+        raise ValueError("No valid columns provided for VIF calculation.")
+
+    # Extract and standardize predictors (z-score)
+    X = df[valid_cols].copy()
+    X_std = (X - X.mean()) / X.std(ddof=0).replace(0, 1e-9)
+    X_const = sm.add_constant(X_std)
+
+    vif_records = []
+    for i, col_name in enumerate(X_const.columns):
+        if col_name == "const":
+            continue
+        vif_val = float(variance_inflation_factor(X_const.values, i))
+        vif_records.append({
+            "parameter": col_name,
+            "VIF": vif_val,
+            "collinear_flag": vif_val >= 5.0,
+        })
+
+    vif_df = pd.DataFrame(vif_records).sort_values("VIF", ascending=False).reset_index(drop=True)
+    return vif_df
 
 
-def fit_logistic(df: pd.DataFrame, predictors: list[str], target: str = "fail"):
-    """Logistic regression: fail ~ shortlisted parameters (+ station controls).
+def fit_logistic(
+    df: pd.DataFrame,
+    predictors: list[str],
+    target: str = "fail",
+) -> tuple[sm.discrete.discrete_model.BinaryResultsWrapper, pd.DataFrame]:
+    """Fit multivariate logistic regression: fail ~ standardized predictors.
 
-    Pre-model hygiene (execution.md §7):
-      - standardize (z-score) continuous predictors so coefficients compare
-      - handle class imbalance with class weights; if failures are very rare,
-        also fit a penalized (L2) model to stabilize estimates
-    Read-out: odds ratios with 95% CIs and p-values. The prime suspect is the
-    parameter with the largest, most significant, CI-excluding-1 effect.
+    Parameters
+    ----------
+    df : pd.DataFrame
+        Tidy parts dataset.
+    predictors : list[str]
+        List of continuous or numeric process features to include in the model.
+    target : str, default "fail"
+        Binary outcome column name.
 
-    Returns the fitted statsmodels result (so the notebook can pull OR/CI/p).
-
-    TODO(day-4/5): fit via statsmodels Logit/GLM; return the result object.
+    Returns
+    -------
+    tuple[BinaryResultsWrapper, pd.DataFrame]
+        The fitted statsmodels Logit result object and a summary DataFrame containing
+        coefficients, standard errors, p-values, Odds Ratios (OR), and 95% CIs.
     """
-    raise NotImplementedError("Implement on Day 4/5 — see guides/day-4.md")
+    if target not in df.columns:
+        raise ValueError(f"Target column '{target}' not found in DataFrame.")
+
+    valid_preds = [p for p in predictors if p in df.columns]
+    if not valid_preds:
+        raise ValueError("No valid predictor columns provided.")
+
+    y = df[target].values
+    X = df[valid_preds].copy()
+
+    # Standardize predictors (z-score) so coefficients are directly comparable
+    X_std = (X - X.mean()) / X.std(ddof=0).replace(0, 1e-9)
+    X_const = sm.add_constant(X_std)
+
+    # Fit Logistic Regression model
+    model = sm.Logit(y, X_const).fit(disp=False)
+
+    # Extract parameters, p-values, and 95% Confidence Intervals
+    params = model.params
+    pvalues = model.pvalues
+    conf_int = model.conf_int()
+
+    # Calculate Odds Ratios and 95% CI on odds ratio scale
+    odds_ratios = np.exp(params)
+    ci_lower = np.exp(conf_int[0])
+    ci_upper = np.exp(conf_int[1])
+
+    summary_df = pd.DataFrame({
+        "parameter": params.index,
+        "coef": params.values,
+        "std_err": model.bse.values,
+        "z_stat": model.tvalues.values,
+        "p_value": pvalues.values,
+        "Odds_Ratio": odds_ratios.values,
+        "CI_lower_95": ci_lower.values,
+        "CI_upper_95": ci_upper.values,
+    })
+
+    # Sort descending by significance (excluding intercept)
+    summary_df = summary_df.sort_values("p_value", ascending=True).reset_index(drop=True)
+
+    return model, summary_df
 
 
 def tree_crosscheck(df: pd.DataFrame, predictors: list[str], target: str = "fail"):
