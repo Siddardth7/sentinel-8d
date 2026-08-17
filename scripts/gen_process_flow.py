@@ -10,12 +10,13 @@ from typing import Sequence
 
 import matplotlib
 matplotlib.use("Agg")
+from matplotlib.axes import Axes
 import matplotlib.patches as patches
 import matplotlib.pyplot as plt
 
 
 def _draw_box(
-    ax: plt.Axes,
+    ax: Axes,
     x: float,
     y: float,
     w: float,
@@ -60,7 +61,7 @@ def _draw_box(
 
 
 def _draw_qc_box(
-    ax: plt.Axes,
+    ax: Axes,
     x: float,
     y: float,
     w: float,
@@ -107,7 +108,7 @@ def _draw_qc_box(
 
 
 def _draw_arrow(
-    ax: plt.Axes,
+    ax: Axes,
     x1: float,
     y1: float,
     x2: float,
