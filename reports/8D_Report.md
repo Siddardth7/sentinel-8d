@@ -7,39 +7,42 @@
 
 | Field | Value |
 |-------|-------|
-| Report ID | _TODO_ |
-| Product / part | _TODO (e.g. pneumatic cylinder)_ |
-| Dataset | _TODO: name, version/date, URL_ |
+| Report ID | 8D-2026-CIP-001 |
+| Product / part | Pneumatic Cylinder Assembly (Cylinder Bottom + Piston Rod) |
+| Dataset | CiP-DMD (TU Darmstadt, DOI: 10.5281/zenodo.8420132) |
 | Author | Siddardth Pathipaka |
-| Date opened | _TODO_ |
-| Status | Draft |
+| Date opened | 2026-08-16 |
+| Status | In Progress (D0–D2 Complete) |
 
 ---
 
 ## D0 — Symptom & emergency response action
 *Source: notebook Step 3 (defect characterization).*
 
-_TODO: the trigger — a fraction of finished parts fail final QC on a specific
-characteristic. State the symptom and any immediate emergency response._
+- **Symptom**: During end-of-line functional acceptance and final pneumatic testing, a significant proportion of assembled cylinders exhibited assembly non-conformities requiring manual disassembly and component rework.
+- **Emergency Response Action (ERA)**: Immediate containment trigger: flagged all finished units from active production lots for 100% functional verification prior to packaging and release; quarantined suspect assembled cylinders requiring rework.
 
 ## D1 — Team
-*Framed (no live team on a case study). Name the roles a real 8D would staff.*
+*Cross-functional problem solving team roles established:*
 
-_TODO: champion, quality engineer, process engineer, data analyst — and why
-each is needed._
+- **Executive Champion**: Plant Quality Director (resource allocation, barrier removal, final 8D sign-off).
+- **Lead Quality Engineer**: Siddardth Pathipaka (8D ownership, statistical traceback, measurement system analysis).
+- **Process / Machining Engineer**: CNC Specialist (tooling, cutting feeds/speeds, milling jig clamping inspection).
+- **Assembly Operations Lead**: Line Supervisor (assembly protocol adherence, pneumatic pressure testing oversight).
+- **Data Analyst**: Quality Data Lead (statistical screening, multi-station join modeling, SPC implementation).
 
 ## D2 — Problem description (5W2H)
 *Source: notebook Step 3 — baseline rate, failure count, total parts.*
 
-| 5W2H | Answer |
-|------|--------|
-| What | _TODO: the failure mode_ |
-| Where | _TODO: final QC, on characteristic X_ |
-| When | _TODO: over what lot/period_ |
-| Who | _TODO_ |
-| Why (matters) | _TODO: cost / recurrence_ |
-| How | _TODO: how detected_ |
-| How many | _TODO: N failures / total, = baseline rate %_ |
+| 5W2H | Description / Evidence |
+|:---|:---|
+| **What** (Failure Mode) | Pneumatic cylinder functional defect requiring assembly rework (`assembly_rework == 'y'`). |
+| **Where** (Location) | Final Cylinder Assembly & Testing Station (downstream of Sawing, CNC Milling, and CNC Lathe operations). |
+| **When** (Timing) | Observed across production batch of 802 assembled units (CiP-DMD trial run). |
+| **Who** (Ownership) | Assembly Operations & Manufacturing Quality Engineering. |
+| **Why** (Severity / Impact) | High rework cost, line stoppage risk, assembly cycle disruption, and risk of escaping dimensional defects. |
+| **How** (Detection Method) | Post-assembly inspection & pneumatic pressure testing protocol (`assembly_qc.csv`). |
+| **How many** (Volume / Rate) | **52 defective units out of 802 total assembled parts** = **6.48% baseline defect rate** (64,838 DPMO). |
 
 ## D3 — Interim containment action
 *Framed.*
