@@ -1,2 +1,2 @@
 # Tidy, one-row-per-part tables (e.g. parts.parquet) are written here by the
-# cleaning step. See guides/day-2.md. Generated from data/raw/ by the notebook.
+# cleaning step, generated from data/raw/ by the notebook (git-ignored).

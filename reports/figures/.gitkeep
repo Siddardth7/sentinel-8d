@@ -1,3 +1,3 @@
 # Regenerated figures land here: process_flow.png, pareto.png,
-# univariate_ranking.png, effect plots, the "smoking-gun" chart.
-# Every figure is produced by the notebook — see execution.md §11.
+# univariate_ranking.png, smoking_gun.png, spc_chart.png.
+# Every figure is reproduced by the scripts in scripts/ (and the notebook).

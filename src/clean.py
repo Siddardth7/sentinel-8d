@@ -1,7 +1,5 @@
 """Stage 2 — cleaning & tidying to one row per part.
 
-Covers execution.md §4 (Step 2). Implemented on Day 2.
-
 Output contract: a tidy frame with one row per finished (assembled) cylinder,
 one column per upstream parameter, plus a single binary `fail` column.
 Persisted to data/processed/parts.parquet so later stages never re-parse raw data.
@@ -103,6 +101,19 @@ def tidy_one_row_per_part(
         how="left",
     ).drop(columns=["part_id_join"])
 
+    # --- Join cylinder (assembly) metadata → assembly pressure-test QC flag ---
+    # The pass/fail verdict for the final pneumatic pressure test lives only in
+    # the cylinder meta_data.json, keyed by part_id_cylinder_bottom. Carrying it
+    # here keeps the defect Pareto fully derivable from parts.parquet (no
+    # hard-coded counts), alongside the saw/mill/lathe `*_qcpass` flags.
+    cyl_meta = raw["cyl_meta"].copy()
+    if "assembly_pressure_qcpass" in cyl_meta.columns:
+        parts = parts.merge(
+            cyl_meta[["part_id_cylinder_bottom", "assembly_pressure_qcpass"]],
+            on="part_id_cylinder_bottom",
+            how="left",
+        )
+
     # --- Consolidate anomaly columns ---
     # Prefer metadata anomaly over CSV anomaly (they should agree)
     if "saw_anomaly" in parts.columns and "saw_anomaly_csv" in parts.columns:
@@ -135,8 +146,8 @@ def tidy_one_row_per_part(
 def handle_missing(df: pd.DataFrame, max_missing_frac: float = 0.5) -> pd.DataFrame:
     """Quantify and handle missing values.
 
-    Rule of thumb (execution.md §4): drop columns above `max_missing_frac`
-    missing. For the rest, DO NOT blindly impute — missingness can be
+    Rule of thumb: drop columns above `max_missing_frac` missing. For the
+    rest, DO NOT blindly impute — missingness can be
     informative (a station a part never visited). Prefer adding a
     `<col>_missing` indicator column over silent imputation.
     """
@@ -183,9 +194,9 @@ def handle_missing(df: pd.DataFrame, max_missing_frac: float = 0.5) -> pd.DataFr
 def define_label(df: pd.DataFrame) -> pd.DataFrame:
     """Add the binary target `fail` (1 = final-QC reject: assembly rework required).
 
-    The specific failing characteristic to chase is chosen on Day 3 from the
-    Pareto (execution.md §5). For the first pass, `fail` encodes whether the
-    assembled cylinder required rework — the most direct assembly-level failure.
+    The specific failing characteristic to chase is chosen from the defect
+    Pareto. `fail` encodes whether the assembled cylinder required rework —
+    the most direct assembly-level failure.
     """
     parts = df.copy()
 

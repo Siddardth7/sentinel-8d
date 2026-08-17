@@ -1,9 +1,8 @@
 # 8D Corrective Action Report — Sentinel-8D
 
 > **AIAG-format Eight Disciplines (8D) report.** Every number in D2 and D4 traces
-> to a cell in `notebooks/01_traceback.ipynb` (execution.md §11). Fill each
-> discipline as you reach it; the "source" note points at the analysis step that
-> produces the content. Render to `reports/8D_Report.pdf` on Day 7.
+> to a cell in `notebooks/01_traceback.ipynb`; each discipline's *source* note
+> points at the analysis step that produces its content.
 
 | Field | Value |
 |-------|-------|
@@ -12,7 +11,7 @@
 | Dataset | CiP-DMD (TU Darmstadt, DOI: 10.5281/zenodo.8420132) |
 | Author | Siddardth Pathipaka |
 | Date opened | 2026-08-16 |
-| Status | In Progress (D0–D2 Complete) |
+| Status | Closed — D0–D8 Complete (2026-08-17) |
 
 ---
 

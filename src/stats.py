@@ -1,10 +1,8 @@
 """Stage 3 — statistical traceback helpers.
 
-Covers execution.md §6 (Step 4, univariate screen) and §7 (Step 5, multivariate
-isolation + tree cross-check). You implement these on Days 3–5.
-
-These functions produce the D4 evidence for the 8D. Guiding rule: lead with
-effect size, not just p-values, and never conclude on a single model.
+Univariate screening, multivariate isolation, and tree cross-check. These
+functions produce the D4 evidence for the 8D. Guiding rule: lead with effect
+size, not just p-values, and never conclude on a single model.
 """
 
 from __future__ import annotations
@@ -26,7 +24,7 @@ def univariate_screen(
 ) -> pd.DataFrame:
     """Test every upstream parameter for a pass-vs-fail difference.
 
-    For each parameter, picks the test by type (execution.md §6):
+    For each parameter, picks the test by type:
         continuous   -> Welch's t-test (unequal variance) & one-way ANOVA
                         reports: mean diff, t-stat, p-value, Cohen's d
         categorical  -> Chi-square test of independence

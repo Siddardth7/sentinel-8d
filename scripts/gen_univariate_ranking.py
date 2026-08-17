@@ -70,7 +70,7 @@ def generate_univariate_ranking_chart(out_path: Path) -> None:
         )
 
     ax.set_yticks(y)
-    ax.set_yticklabels(plot_df["parameter"], fontsize=9.5, fontweight="medium")
+    ax.set_yticklabels(plot_df["parameter"], fontsize=9.5)
     ax.set_xlabel("Absolute Effect Size (|Cohen's d| or Cramér's V)", fontsize=11, fontweight="bold", color="#1a237e")
     ax.set_xlim(0, max(plot_df["abs_effect_size"]) * 1.35)
     ax.grid(axis="x", linestyle="--", alpha=0.5, zorder=1)

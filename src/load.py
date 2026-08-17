@@ -1,11 +1,8 @@
 """Stage 1 — data acquisition & schema mapping.
 
-Covers execution.md §2 (Step 0) and the first half of §3 (Step 1).
-Implemented Day 1 (acquisition) and Day 2 (schema/dictionary).
-
 Design goal: everything downstream is *dataset-agnostic*. Only this module knows
-whether we are on the preferred CiP-DMD data or the Bosch fallback — it returns
-raw DataFrames plus a data dictionary, and the rest of the pipeline works on those.
+the layout of the raw CiP-DMD source — it returns raw DataFrames plus a data
+dictionary, and the rest of the pipeline works on those.
 """
 
 from __future__ import annotations

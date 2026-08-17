@@ -86,6 +86,54 @@ In multi-step discrete manufacturing, a defect caught at final functional inspec
 
 ---
 
+## Repository Structure
+
+```
+sentinel-8d/
+├── README.md                     # this file
+├── requirements.txt              # pinned Python dependencies
+├── notebooks/
+│   └── 01_traceback.ipynb        # end-to-end reproducible analysis (raw → 8D)
+├── src/                          # modular, dataset-agnostic analysis engine
+│   ├── load.py                   # raw ingestion & schema mapping
+│   ├── clean.py                  # traceability join, missing-value handling, labeling
+│   └── stats.py                  # screening, VIF, logistic regression, tree cross-check
+├── scripts/                      # standalone figure + report generators
+│   ├── fetch_cip_dmd.py          # selective dataset download (resumable)
+│   ├── gen_*.py                  # one script per statistical figure
+│   └── render_report_html.py     # compiles 8D_Report.md → standalone HTML
+├── reports/
+│   ├── 8D_Report.md / .html      # headline deliverable (AIAG 8D, D0–D8)
+│   └── figures/*.png             # statistical evidence figures
+└── data/                         # raw/ + processed/ (contents git-ignored)
+```
+
+## Reproduce
+
+```bash
+python -m venv .venv && source .venv/bin/activate
+pip install -r requirements.txt
+
+# 1. Fetch the CiP-DMD source data (resumable; skip if you already have data/raw/)
+python scripts/fetch_cip_dmd.py
+
+# 2. Run the analysis end-to-end (writes data/processed/parts.parquet)
+jupyter nbconvert --to notebook --execute --inplace notebooks/01_traceback.ipynb
+
+# 3. Regenerate every figure and re-render the 8D report
+python scripts/gen_process_flow.py
+python scripts/gen_pareto.py
+python scripts/gen_univariate_ranking.py
+python scripts/gen_smoking_gun.py
+python scripts/gen_spc_chart.py
+python scripts/render_report_html.py
+```
+
+Figures in steps 2–5 read directly from `data/processed/parts.parquet`, so every
+number in the report and charts traces back to the raw dataset.
+
+---
+
 ## Author
 
 **Siddardth Pathipaka** — Quality & Process Engineer · M.S. Aerospace Engineering (UIUC) · Six Sigma Green Belt  
