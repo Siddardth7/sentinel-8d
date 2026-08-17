@@ -15,6 +15,8 @@ Thumbs.db
 # The notebook regenerates data/processed/ from data/raw/.
 data/raw/*
 !data/raw/.gitkeep
+data/processed/*
+!data/processed/.gitkeep
 
 # --- Build artifacts ---
 # The 8D PDF is rendered from reports/8D_Report.md; keep the source, not the build.
