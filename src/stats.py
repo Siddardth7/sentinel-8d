@@ -278,16 +278,79 @@ def fit_logistic(
     return model, summary_df
 
 
-def tree_crosscheck(df: pd.DataFrame, predictors: list[str], target: str = "fail"):
-    """Fit a gradient-boosted / random-forest model and rank feature importances.
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.inspection import permutation_importance
 
-    Purpose: an independent second opinion on the top driver. REQUIRE agreement
-    between this and the logistic model before concluding (execution.md §7) —
-    this guards against a model-specific artifact. A permutation-importance or
-    SHAP view is a good robustness add-on.
 
-    Returns importances aligned to `predictors`, sorted descending.
+def tree_crosscheck(
+    df: pd.DataFrame,
+    predictors: list[str],
+    target: str = "fail",
+    n_estimators: int = 100,
+    random_state: int = 42,
+) -> pd.DataFrame:
+    """Fit a Random Forest model and rank feature importances (Gini & Permutation).
 
-    TODO(day-5): fit sklearn model; return importance ranking.
+    Provides an independent non-linear model family cross-check against the
+    logistic regression model. Requires agreement on the primary suspect.
+
+    Parameters
+    ----------
+    df : pd.DataFrame
+        Tidy parts dataset.
+    predictors : list[str]
+        Predictor columns to evaluate.
+    target : str, default "fail"
+        Binary outcome column name.
+    n_estimators : int, default 100
+        Number of trees in the forest.
+    random_state : int, default 42
+        Seed for reproducibility.
+
+    Returns
+    -------
+    pd.DataFrame
+        Ranked table: 'parameter', 'gini_importance', 'perm_importance_mean', 'perm_importance_std'.
     """
-    raise NotImplementedError("Implement on Day 5 — see guides/day-5.md")
+    if target not in df.columns:
+        raise ValueError(f"Target column '{target}' not found in DataFrame.")
+
+    valid_preds = [p for p in predictors if p in df.columns]
+    if not valid_preds:
+        raise ValueError("No valid predictor columns provided.")
+
+    X = df[valid_preds].copy()
+    y = df[target].values
+
+    # Fit Random Forest with balanced class weighting for rare events
+    rf = RandomForestClassifier(
+        n_estimators=n_estimators,
+        class_weight="balanced",
+        random_state=random_state,
+    )
+    rf.fit(X, y)
+
+    # Compute ROC-AUC based permutation feature importance
+    perm = permutation_importance(
+        rf,
+        X,
+        y,
+        scoring="roc_auc",
+        n_repeats=20,
+        random_state=random_state,
+    )
+
+    importance_df = pd.DataFrame({
+        "parameter": valid_preds,
+        "gini_importance": rf.feature_importances_,
+        "perm_importance_mean": perm.importances_mean,
+        "perm_importance_std": perm.importances_std,
+    })
+
+    # Sort descending by permutation importance
+    importance_df = importance_df.sort_values(
+        "perm_importance_mean", ascending=False
+    ).reset_index(drop=True)
+
+    return importance_df
+
