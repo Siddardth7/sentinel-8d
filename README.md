@@ -168,3 +168,14 @@ quality system — each one a natural next station on the same dataset.
 
 **Siddardth Pathipaka** — Quality & Process Engineer · M.S. Aerospace Engineering (UIUC) · Six Sigma Green Belt  
 GitHub: [@Siddardth7](https://github.com/Siddardth7)
+
+---
+
+## Declaration of AI Usage
+
+AI (Claude Code) was used strictly as a **coding-assistance tool** — writing and
+debugging the analysis scripts, notebook, and figure generators. Every
+**engineering and domain decision** is my own: the choice of statistical methods,
+the interpretation of results, the physical root-cause mechanism, the corrective
+action, and the 8D conclusions. The analysis, judgment, and accountability for
+this case study are entirely mine.
