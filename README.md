@@ -92,6 +92,11 @@ In multi-step discrete manufacturing, a defect caught at final functional inspec
 sentinel-8d/
 ├── README.md                     # this file
 ├── requirements.txt              # pinned Python dependencies
+├── foundation/                   # ground-up planning docs written before any code
+│   ├── idea.md                   # problem framing, scope, risk register, acceptance criteria
+│   ├── execution.md              # detailed build plan & statistical methodology
+│   ├── roadmap.md                # milestone plan (as originally scoped)
+│   └── resources.md              # datasets, standards, and references
 ├── notebooks/
 │   └── 01_traceback.ipynb        # end-to-end reproducible analysis (raw → 8D)
 ├── src/                          # modular, dataset-agnostic analysis engine
