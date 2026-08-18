@@ -134,6 +134,36 @@ number in the report and charts traces back to the raw dataset.
 
 ---
 
+## Roadmap & Future Work
+
+The 8D corrective-action cycle (D0–D8) is **complete**: root cause proven with
+multi-model statistical consensus, permanent I-MR SPC control installed, and the
+control plan / PFMEA handed off. The directions below extend the case study from
+a retrospective, single-parameter traceback toward a live, plant-wide predictive
+quality system — each one a natural next station on the same dataset.
+
+- **Predictive / multivariate SPC.** Replace the univariate I-MR chart with a
+  Hotelling $T^2$ / MEWMA monitor over the full station-parameter vector, so
+  combinations that are each in-spec but jointly defect-precursive are caught
+  before a part fails — shifting from *detection* to *forecasting* defect
+  probability hours ahead.
+- **Probabilistic root cause across the routing.** Fit a Bayesian network over
+  the traceability graph to reason about *interacting* multi-station causes and
+  attach calibrated probabilities to each candidate, rather than isolating one
+  dominant parameter at a time.
+- **Explainable model consensus.** Layer SHAP attribution on the existing Random
+  Forest / Gradient Boosting cross-check to turn "unanimous #1 driver" into
+  per-part, auditor-readable explanations.
+- **Tool-wear survival modeling.** Treat feed-rate and blank-mass drift as a
+  time-to-failure process (Cox / Weibull) to predict *when* the saw station
+  crosses the escape threshold, enabling condition-based maintenance instead of
+  fixed intervals.
+- **Streaming deployment / digital twin.** Wire the `src/` engine to live station
+  telemetry for real-time traceback and an in-line checkweigher feedback loop,
+  closing the escape point identified in D4 at the source.
+
+---
+
 ## Author
 
 **Siddardth Pathipaka** — Quality & Process Engineer · M.S. Aerospace Engineering (UIUC) · Six Sigma Green Belt  
